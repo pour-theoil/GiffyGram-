@@ -1,4 +1,4 @@
-import { getDadJoke, getPosts, createPost, usePostCollection } from "../data/DataManager.js"
+import { getDadJoke, getPosts, createPost, usePostCollection, getLoggedInUser } from "../data/DataManager.js"
 import { PostList } from "./feed/postlist.js"
 import { Joke } from "./dadjoke/joke.js"
 import { NavBar } from "./nav/NavBar.js"
@@ -40,6 +40,7 @@ const startGiffyGram = () => {
 }
 
 const showFilteredPosts = (year) => {
+    debugger
     //get a copy of the post collection
     const epoch = Date.parse(`01/01/${year}`);
     //filter the data
@@ -68,6 +69,10 @@ applicationElement.addEventListener("click", event => {
 
 applicationElement.addEventListener("click", event => {
     if (event.target.id === "newPost__cancel") {
+
+        document.querySelector("input[name='postTitle']").value = ""
+        document.querySelector("input[name='postURL']").value = "" 
+        document.querySelector("textarea[name='postDescription']").value = ""
         //clear the input fields
     }
   })
@@ -94,13 +99,12 @@ applicationElement.addEventListener("click", event => {
           title: title,
           imageURL: url,
           description: description,
-          userId: 1,
+          userId: getLoggedInUser().id,
           timestamp: Date.now()
       }
   
     // be sure to import from the DataManager
         createPost(postObject).then(startGiffyGram());
-        
     }
     
   })

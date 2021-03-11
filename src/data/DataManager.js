@@ -51,6 +51,7 @@ export const createPost = postObj => {
   
     })
         .then(response => response.json())
+        .then(getPosts())
   }
 const loggedInUser = {
 	id: 1,
