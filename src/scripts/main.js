@@ -1,4 +1,4 @@
-import { getDadJoke, getPosts, createPost, usePostCollection, getLoggedInUser } from "../data/DataManager.js"
+import { deletePost, getDadJoke, getPosts, createPost, usePostCollection, getLoggedInUser } from "../data/DataManager.js"
 import { PostList } from "./feed/postlist.js"
 import { Joke } from "./dadjoke/joke.js"
 import { NavBar } from "./nav/NavBar.js"
@@ -128,6 +128,17 @@ applicationElement.addEventListener("change", event => {
     }
 })
 
+applicationElement.addEventListener("click", event => {
+    event.preventDefault();
+    if (event.target.id.startsWith("delete")) {
+      const postId = event.target.id.split("__")[1];
+      deletePost(postId)
+        .then(response => {
+          showPostList();
+        })
+    }
+  })
+
 // Execution functions
 showNavBar();
 dadjokes();
@@ -141,5 +152,6 @@ const showPostEntry = () => {
     
 }
 showPostEntry();
+deletePost();
 
 
