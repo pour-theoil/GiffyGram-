@@ -137,3 +137,14 @@ export const getPosts = () => {
         return parsedResponse;
       })
 }
+
+export const userPosts = (userID) => {
+    return fetch(`http://localhost:8088/posts?id=${userID}`)
+    .then(response => response.json())
+      .then(parsedResponse => {
+        console.log("posts from user", parsedResponse)
+        postCollection = parsedResponse
+        return parsedResponse;
+      })
+
+}

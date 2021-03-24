@@ -1,5 +1,6 @@
 import { deletePost, getDadJoke, getPosts, createPost, 
-    usePostCollection, getLoggedInUser, registerUser, loginUser, logoutUser } from "../data/DataManager.js"
+    usePostCollection, getLoggedInUser, registerUser, loginUser, logoutUser,
+  userPosts } from "../data/DataManager.js"
 import { PostList } from "./feed/postlist.js"
 import { Joke } from "./dadjoke/joke.js"
 import { NavBar } from "./nav/NavBar.js"
@@ -13,9 +14,18 @@ const applicationElement = document.querySelector(".giffygram");
 const showPostList = () => {
     const postElement = document.querySelector(".postList");
       getPosts().then((allPosts) => {
-          postElement.innerHTML = PostList(allPosts, userObject.name);
+          postElement.innerHTML = PostList(allPosts);
       })
 }
+
+applicationElement.addEventListener("click", event => {
+  if (event.target.id === "userposts") {
+    const postElement = document.querySelector(".postList");
+      userPosts(getLoggedInUser().id).then((allPosts) => {
+          postElement.innerHTML = PostList(allPosts, userObject.name);
+      })
+  }
+})
 
 const showDadJoke = () => {
     const postElement = document.querySelector(".dadjoke");
@@ -30,6 +40,7 @@ applicationElement.addEventListener("click", event => {
     console.log(getLoggedInUser());
   }
 })
+
 
 const checkForUser = () => {
   	if (sessionStorage.getItem("user")){
@@ -49,7 +60,8 @@ const showLoginRegister = () => {
 	const postElement = document.querySelector(".postList");
 	postElement.innerHTML = "";
 }
-let userObject = {};
+
+let userObject = {}
 applicationElement.addEventListener("click", event => {
   event.preventDefault();
   if (event.target.id === "login__submit") {
