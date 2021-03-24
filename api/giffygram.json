@@ -9,8 +9,43 @@
       "name": "Paige",
       "email": "Paige@email.com",
       "id": 2
+    },
+    {
+      "name": "Logan",
+      "email": "frank.demmy@gmail.com",
+      "id": 3
+    },
+    {
+      "name": "john",
+      "email": "john@gmail.com",
+      "id": 4
     }
   ],
-  "posts": [],
+  "posts": [
+    {
+      "title": "Teamwork",
+      "imageURL": "https://media.giphy.com/media/DhstvI3zZ598Nb1rFf/giphy.gif",
+      "description": "Its the office",
+      "userId": 1,
+      "timestamp": 1616602891332,
+      "id": 1
+    },
+    {
+      "title": "99",
+      "imageURL": "https://media.giphy.com/media/YOjW8IpbWneVLNkRhe/giphy.gif",
+      "description": "more teamwork",
+      "userId": 1,
+      "timestamp": 1616602922428,
+      "id": 2
+    },
+    {
+      "title": "Soccer?",
+      "imageURL": "https://media.giphy.com/media/GKliD9i20iP8k/giphy.gif",
+      "description": "Something going on here",
+      "userId": 4,
+      "timestamp": 1616603881221,
+      "id": 3
+    }
+  ],
   "messages": []
 }

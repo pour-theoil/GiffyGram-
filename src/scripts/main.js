@@ -1,10 +1,15 @@
-import { deletePost, getDadJoke, getPosts, createPost, usePostCollection, getLoggedInUser } from "../data/DataManager.js"
+import { deletePost, getDadJoke, getPosts, createPost, 
+    usePostCollection, getLoggedInUser, registerUser, loginUser, logoutUser } from "../data/DataManager.js"
 import { PostList } from "./feed/postlist.js"
 import { Joke } from "./dadjoke/joke.js"
 import { NavBar } from "./nav/NavBar.js"
 import { Footer } from "./footer/footer.js"
 import { PostEntry } from "./feed/postentry.js"
+import { LoginForm } from "./auth/Login.js"
+import { RegisterForm } from "./auth/RigisterForm.js"
 
+
+const applicationElement = document.querySelector(".giffygram");
 const showPostList = () => {
     const postElement = document.querySelector(".postList");
       getPosts().then((allPosts) => {
@@ -18,6 +23,79 @@ const showDadJoke = () => {
           postElement.innerHTML = Joke(joke);
       })
 }
+
+applicationElement.addEventListener("click", event => {
+  if (event.target.id === "logout") {
+    logoutUser();
+    console.log(getLoggedInUser());
+  }
+})
+
+const checkForUser = () => {
+  	if (sessionStorage.getItem("user")){
+		  setLoggedInUser(JSON.parse(sessionStorage.getItem("user")));
+    	startGiffyGram();
+  	}else {
+   		showLoginRegister();
+  	}
+}
+
+const showLoginRegister = () => {
+  	showNavBar();
+  	const entryElement = document.querySelector(".entryForm");
+  	//template strings can be used here too
+  	entryElement.innerHTML = `${LoginForm()} <hr/> <hr/> ${RegisterForm()}`;
+  	//make sure the post list is cleared out too
+	const postElement = document.querySelector(".postList");
+	postElement.innerHTML = "";
+}
+
+applicationElement.addEventListener("click", event => {
+  event.preventDefault();
+  if (event.target.id === "login__submit") {
+    //collect all the details into an object
+    const userObject = {
+      name: document.querySelector("input[name='name']").value,
+      email: document.querySelector("input[name='email']").value
+    }
+    loginUser(userObject)
+    .then(dbUserObj => {
+      if(dbUserObj){
+        sessionStorage.setItem("user", JSON.stringify(dbUserObj));
+        startGiffyGram();
+      }else {
+        //got a false value - no user
+        const entryElement = document.querySelector(".entryForm");
+        entryElement.innerHTML = `<p class="center">That user does not exist. Please try again or register for your free account.</p> ${LoginForm()} <hr/> <hr/> ${RegisterForm()}`;
+      }
+    })
+  }
+})
+
+applicationElement.addEventListener("click", event => {
+  event.preventDefault();
+  if (event.target.id === "register__submit") {
+    //collect all the details into an object
+    const userObject = {
+      name: document.querySelector("input[name='registerName']").value,
+      email: document.querySelector("input[name='registerEmail']").value
+    }
+    registerUser(userObject)
+    .then(dbUserObj => {
+      sessionStorage.setItem("user", JSON.stringify(dbUserObj));
+      startGiffyGram();
+    })
+  }
+})
+
+applicationElement.addEventListener("click", event => {
+  if (event.target.id === "logout") {
+    logoutUser();
+    console.log(getLoggedInUser());
+    sessionStorage.clear();
+    checkForUser();
+  }
+})
 
 const showNavBar = () => {
     //Get a reference to the location on the DOM where the nav will display
@@ -36,6 +114,7 @@ const dadjokes = () => {
 }
 
 const startGiffyGram = () => {
+  showPostEntry ();
 	showPostList();
 }
 
@@ -57,15 +136,10 @@ const showFilteredPosts = (year) => {
 
 // eventlistener section, we have created the variable applicationElement that 
 // will "listen" for diffent events happening in the .giffygram part of the page.
-const applicationElement = document.querySelector(".giffygram");
+
 
 document.getElementById("newjoke").onclick = function() {dadjokes()}
 
-applicationElement.addEventListener("click", event => {
-	if (event.target.id === "logout"){
-		console.log("You clicked on logout")
-	}
-})
 
 applicationElement.addEventListener("click", event => {
     if (event.target.id === "newPost__cancel") {
@@ -140,10 +214,10 @@ applicationElement.addEventListener("click", event => {
   })
 
 // Execution functions
-showNavBar();
+
 dadjokes();
 showFooter();
-startGiffyGram();
+showLoginRegister()
 
 const showPostEntry = () => { 
     //Get a reference to the location on the DOM where the nav will display
@@ -151,7 +225,6 @@ const showPostEntry = () => {
     entryElement.innerHTML = PostEntry();
     
 }
-showPostEntry();
 deletePost();
 
 
