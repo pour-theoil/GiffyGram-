@@ -19,17 +19,14 @@
       "name": "john",
       "email": "john@gmail.com",
       "id": 4
+    },
+    {
+      "name": "paige",
+      "email": "paige@gmail.com",
+      "id": 5
     }
   ],
   "posts": [
-    {
-      "title": "Teamwork",
-      "imageURL": "https://media.giphy.com/media/DhstvI3zZ598Nb1rFf/giphy.gif",
-      "description": "Its the office",
-      "userId": 1,
-      "timestamp": 1616602891332,
-      "id": 1
-    },
     {
       "title": "99",
       "imageURL": "https://media.giphy.com/media/YOjW8IpbWneVLNkRhe/giphy.gif",

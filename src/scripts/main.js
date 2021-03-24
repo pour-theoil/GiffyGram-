@@ -13,7 +13,7 @@ const applicationElement = document.querySelector(".giffygram");
 const showPostList = () => {
     const postElement = document.querySelector(".postList");
       getPosts().then((allPosts) => {
-          postElement.innerHTML = PostList(allPosts);
+          postElement.innerHTML = PostList(allPosts, userObject.name);
       })
 }
 
@@ -49,12 +49,12 @@ const showLoginRegister = () => {
 	const postElement = document.querySelector(".postList");
 	postElement.innerHTML = "";
 }
-
+let userObject = {};
 applicationElement.addEventListener("click", event => {
   event.preventDefault();
   if (event.target.id === "login__submit") {
     //collect all the details into an object
-    const userObject = {
+    userObject = {
       name: document.querySelector("input[name='name']").value,
       email: document.querySelector("input[name='email']").value
     }
